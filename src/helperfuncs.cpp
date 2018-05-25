@@ -339,7 +339,7 @@ bool IsNickHandler::Call(const char* n, size_t max)
         }
 
 	/* Minimum of 4 characters (to preserve SID), but not greater than maximum length */
-        return (p > 3 && p <= max);
+        return (p <= max);
 }
 
 /* return true for good ident, false else */
