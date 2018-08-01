@@ -35,7 +35,7 @@ class CommandNick : public Command
 	CommandNick ( Module* parent) : Command(parent,"NICK", 1, 1) { works_before_reg = true; syntax = "<newnick>"; Penalty = 0; }
 	/** Handle command.
 	 * @param parameters The parameters to the comamnd
-	 * @param pcnt The number of parameters passed to teh command
+	 * @param pcnt The number of parameters passed to the command
 	 * @param user The user issuing the command
 	 * @return A value from CmdResult to indicate command success or failure.
 	 */
@@ -69,6 +69,11 @@ CmdResult CommandNick::Handle (const std::vector<std::string>& parameters, User 
 	else if (!ServerInstance->IsNick(newnick.c_str(), ServerInstance->Config->Limits.NickMax))
 	{
 		user->WriteNumeric(432, "%s %s :Erroneous Nickname", user->nick.c_str(),newnick.c_str());
+		return CMD_FAILURE;
+	}
+	else if (newnick.size() < 4)
+	{
+		user->WriteNumeric(432, "%s %s :Nickname is too short", user->nick.c_str(), newnick.c_str());
 		return CMD_FAILURE;
 	}
 

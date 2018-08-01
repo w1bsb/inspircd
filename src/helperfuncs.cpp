@@ -317,29 +317,25 @@ bool IsChannelHandler::Call(const char *chname, size_t max)
 /* true for valid nickname, false else */
 bool IsNickHandler::Call(const char* n, size_t max)
 {
-	if (!n || !*n)
-		return false;
-
-	unsigned int p = 0;
-	for (const char* i = n; *i; i++, p++)
-	{
-		if ((*i >= 'A') && (*i <= '}'))
-		{
-			/* "A"-"}" can occur anywhere in a nickname */
-			continue;
-		}
-
-		if ((((*i >= '0') && (*i <= '9')) || (*i == '-')) && (i > n))
-		{
-			/* "0"-"9", "-" can occur anywhere BUT the first char of a nickname */
-			continue;
-		}
-
-		/* invalid character! abort */
-		return false;
-	}
-
-	/* too long? or not */
+        if (!n || !*n)
+                return false;
+        unsigned int p = 0;
+        for (const char* i = n; *i; i++, p++)
+        {
+		if ( ( (*i >= 'A') && (*i<='Z') ) || ( (*i >= 'a') && (*i <= 'z') ) || ( (*i >='0') && (*i<= '9') ) )
+                {
+                        /* A-Z, a-z or 0-9 can occur anywhere */
+                        continue;
+                }
+                if ( (*i == '-') && (i > n) )
+                {
+                        /* "-" can occur anywhere BUT the first char of a nickname */
+                        continue;
+                }
+                /* invalid character! abort */
+                return false;
+        }
+	/* Minimum of 4 characters (to preserve SID), but not greater than maximum length */
 	return (p <= max);
 }
 
